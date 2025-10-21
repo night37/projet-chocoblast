@@ -8,10 +8,16 @@ $url = parse_url($_SERVER['REQUEST_URI']);
 //test soit l'url a une route sinon on renvoi à la racine
 $path = isset($url['path']) ? $url['path'] : '/';
 
+//Import des classes
+use App\Controller\HomeController;
+
+//Créer des objets Controller
+$home = new HomeController();
+
 //Router
 switch ($path) {
     case '/':
-        echo "Home";
+        $home->index();
         break;
     case '/login':
         echo "login";
