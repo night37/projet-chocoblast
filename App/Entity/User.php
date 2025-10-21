@@ -93,4 +93,12 @@ class User {
     public function setStatus(bool $status): void {
         $this->status = $status;
     }
+
+    public function hashPassword() {
+        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+    }
+
+    public function verifPassword(string $plainPassword) {
+        return password_verify($plainPassword, $this->password);
+    }
 }

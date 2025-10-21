@@ -10,10 +10,8 @@ $url = parse_url($_SERVER['REQUEST_URI']);
 $path = isset($url['path']) ? $url['path'] : '/';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
-use App\Database\MariaDB;
-$bdd = new MariaDB();
-$bdd->connectBdd();
-dd($bdd);
+
+
 //Import des classes
 use App\Controller\HomeController;
 use App\Controller\ErrorController;
