@@ -1,0 +1,19 @@
+{
+    "name": "mathieumithridate/chocoblast",
+    "description": "Projet de cours sur le théme chocoblast",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/"
+        }
+    },
+    "authors": [
+        {
+            "name": "mithridatem",
+            "email": "mathieumithridate@adrar-formation.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
