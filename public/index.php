@@ -10,14 +10,15 @@ $path = isset($url['path']) ? $url['path'] : '/';
 
 //Import des classes
 use App\Controller\HomeController;
+use App\Controller\ErrorController;
 
 //Créer des objets Controller
-$home = new HomeController();
-
+$homeController = new HomeController();
+$errorController = new ErrorController();
 //Router
 switch ($path) {
     case '/':
-        $home->index();
+        $homeController->index();
         break;
     case '/login':
         echo "login";
@@ -41,6 +42,6 @@ switch ($path) {
         echo "Supprimer un chocoblast par son ID";
         break;
     default:
-        echo "Erreur 404";
+        $errorController->error404();
         break;
 }
