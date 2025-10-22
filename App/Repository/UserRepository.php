@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\EntityInterface;
+use App\Entity\Entity;
 use App\Repository\AbstractRepository;
 use App\Entity\User;
 
@@ -15,7 +15,11 @@ class UserRepository extends AbstractRepository
         $this->setConnexion();
     }
 
-    //Ajouter un Utilisateur
+    /**
+     * Méthode pour enregistrer un User en BDD
+     * @param User $user (Objet User à ajouter en BDD)
+     * @return void ne retourne rien
+     */
     public function saveUser(User $user): void
     {
         //1 écrire la requête SQL
@@ -35,16 +39,78 @@ class UserRepository extends AbstractRepository
         //4 exécuter la requête
         $req->execute();
     }
-    //Afficher un Utilisateur
-    public function find(int $id): ?EntityInterface
+
+    /**
+     * Méthode pour rechercher un User avec son id
+     * @param int $id id du User à chercher en BDD
+     * @return Entity|null retourne un Objet User(Entity) ou null
+     */
+    public function findV2(int $id): ?Entity
     {
-        return new EntityInterface();
+        $request = "SELECT id, firstname, lastname, email, pseudo, img_profile AS imgProfil, `password`, grants ,`status` 
+        FROM users WHERE id = ?";
+        $req = $this->connexion->prepare($request);
+        $req->bindParam(1, $id, \PDO::PARAM_INT);
+        $req->execute();
+        $userTab = $req->fetch(\PDO::FETCH_ASSOC);
+        $user = User::hydrateUser($userTab);
+        return $user;
     }
-    
-    //Afficher tous les Utilisateur
+
+    /**
+     * Méthode pour rechercher un User avec son id
+     * @param int $id id du User à chercher en BDD
+     * @return Entity|null retourne un Objet User(Entity) ou null
+     */
+    public function find(int $id): ?Entity
+    {
+        $request = "SELECT id, firstname, lastname, email, `password`, grants AS `grant`, pseudo,
+        `status`, img_profile AS imgProfil
+        FROM users WHERE id = ?";
+        $req = $this->connexion->prepare($request);
+        $req->bindParam(1, $id, \PDO::PARAM_INT);
+        $req->execute();
+        $req->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, User::class);
+        $user = $req->fetch();
+        $user->setGrants($user->grant);
+        return $user;
+    }
+
+    /**
+     * Méthode pour rechercher tous les User
+     * @return array<Entity> retourne un tableau avec tous les User
+     */
     public function findAll(): array
     {
-        return [];
+        $request = "SELECT id, firstname, lastname, email, pseudo, img_profile AS imgProfil, 
+        `password`, grants,`status` FROM users";
+        $req = $this->connexion->prepare($request);
+        $req->execute();
+        $userTab = $req->fetchAll(\PDO::FETCH_ASSOC);
+        $users = [];
+        foreach ($userTab as $key => $value) {
+           $users[] = User::hydrateUser($value);
+        }
+        return $users;
+    }
+
+    /**
+     * Méthode pour rechercher tous les User
+     * @return array<Entity> retourne un tableau avec tous les User
+     */
+    public function findAllV2(): array
+    {
+        $request = "SELECT id, firstname, lastname, email, `password`, grants AS `roles`, pseudo,
+        `status`, img_profile AS imgProfil FROM users";
+        $req = $this->connexion->prepare($request);
+        $req->execute();
+        $req->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, User::class);
+        $users = $req->fetchAll();
+        //Réassigner le tableau de roles grants
+        foreach ($users as $key => $value) {
+            $value->setGrants($value->roles);
+        }
+        return $users;
     }
     //Modifier un Utilisateur
 }

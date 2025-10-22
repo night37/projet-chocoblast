@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Database\MariaDB;
-use App\Entity\EntityInterface;
+use App\Entity\Entity;
 
 abstract class AbstractRepository
 {
@@ -18,11 +18,12 @@ abstract class AbstractRepository
 
     /**
      * @param int $id Id de l'entité à rechercher
+     * @return Entity|null
      */
-    abstract public function find(int $id):?EntityInterface;
+    abstract public function find(int $id):?Entity;
     
     /**
-     * @return array<EntityInterface>
+     * @return array<Entity>
      */
     abstract public function findAll():array;
 }
