@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-class User
+class User extends EntityInterface
 {
     //Attributs
     private int $id;

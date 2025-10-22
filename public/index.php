@@ -18,6 +18,7 @@ use App\Controller\ErrorController;
 //Créer des objets Controller
 $homeController = new HomeController();
 $errorController = new ErrorController();
+
 //Router
 switch ($path) {
     case '/':

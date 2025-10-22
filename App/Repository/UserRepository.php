@@ -2,18 +2,15 @@
 
 namespace App\Repository;
 
-use App\Database\MariaDB;
+use App\Repository\AbstractRepository;
 use App\Entity\User;
 
-class UserRepository
+class UserRepository extends AbstractRepository
 {
-    //Attibuts
-    private \PDO $connexion;
-
     //Constructeur
     public function __construct() 
     {
-        $this->connexion = (new MariaDB())->connectBdd();
+        $this->setConnexion();
     }
 
     //Ajouter un Utilisateur
@@ -35,7 +32,6 @@ class UserRepository
         $req->bindValue(8, $user->getStatus(), \PDO::PARAM_BOOL);
         //4 exécuter la requête
         $req->execute();
-
     }
     //Afficher un Utilisateur
 

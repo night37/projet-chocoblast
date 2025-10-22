@@ -8,6 +8,6 @@ class HomeController extends AbstractController
 {
     public function index() 
     {
-        $this->render("home", "vide", []);
+        $this->render("home", "vide");
     }
 }
