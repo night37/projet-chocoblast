@@ -8,6 +8,7 @@ $url = parse_url($_SERVER['REQUEST_URI']);
 //test soit l'url a une route sinon on renvoi à la racine
 $path = isset($url['path']) ? $url['path'] : '/';
 
+//Chargement des variables d'environnement
 $dotenv = Dotenv\Dotenv::createImmutable("../");
 $dotenv->load();
 
@@ -15,7 +16,7 @@ $dotenv->load();
 use App\Controller\HomeController;
 use App\Controller\ErrorController;
 
-//Créer des objets Controller
+//instanciation des objets Controller
 $homeController = new HomeController();
 $errorController = new ErrorController();
 

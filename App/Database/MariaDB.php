@@ -4,6 +4,10 @@ namespace App\Database;
 
 class MariaDB
 {
+    /**
+     * Méthode pour se connecter à la base de données MariaDB
+     * @return \PDO L'objet PDO pour la connexion à la base de données
+     */
     public function connectBdd(): \PDO
     {
         return

@@ -9,10 +9,12 @@ use App\DTO\TestDTOWrapper;
 
 class HomeController extends AbstractController
 {
+    //Import du repository utilisateur
     private UserRepository $userRepository;
 
     public function __construct()
     {
+        //Initialisation du repository utilisateur
         $this->userRepository = new UserRepository();
     }
 
@@ -25,7 +27,10 @@ class HomeController extends AbstractController
         $this->render("home", "vide");
     } */
 
-
+    /**
+     * Méthode pour afficher la page d'accueil
+     * @return void affiche la page d'accueil
+     */
     public function index() 
     {
         $this->render("home", "vide");

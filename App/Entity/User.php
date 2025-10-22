@@ -6,7 +6,7 @@ use App\Entity\Entity;
 
 class User extends Entity
 {
-    //Attributs
+    /** Bloc attributs  **/
     private ?int $id;
     private ?string $lastname;
     private ?string $firstname;
@@ -17,12 +17,13 @@ class User extends Entity
     private ?array $grants;
     private ?bool $status;
 
-    //constructeur
+    /** Bloc constructeur   **/
+
     public function __construct(
-       ?string $firstname = null,
-       ?string $lastname = null,
-       ?string $email = null,
-       ?string $password = null,
+        ?string $firstname = null,
+        ?string $lastname = null,
+        ?string $email = null,
+        ?string $password = null,
     ) {
         $this->firstname = $firstname;
         $this->lastname = $lastname;
@@ -34,7 +35,8 @@ class User extends Entity
         $this->id = null;
     }
 
-    //Getters et Setters
+    /** Bloc Getters et Setters   **/
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,26 +107,6 @@ class User extends Entity
         $this->imgProfil = $imgProfil;
     }
 
-    public function getGrants(): ?array
-    {
-        return $this->grants;
-    }
-    public function setGrants(?string $grants) {
-        $grants = explode(',', $grants);
-        $this->grants = $grants;
-    }
-
-    public function addGrant(?string $grant): void
-    {
-        $this->grants[] = $grant;
-    }
-
-    public function removeGrant(?string $grant): void
-    {
-        unset($this->grants[array_search($grant, $this->grants)]);
-        sort($this->grants);
-    }
-
     public function getStatus(): bool
     {
         return $this->status;
@@ -135,7 +117,48 @@ class User extends Entity
         $this->status = $status;
     }
 
-    //Méthodes
+    /** Bloc gestion des grants   **/
+    /**
+     * Méthode pour récupérer les grants
+     * @return array|null retourne la liste des grants
+     */
+    public function getGrants(): ?array
+    {
+        return $this->grants;
+    }
+
+    /**
+     * Méthode pour hydrater les grants
+     * @param string $grants liste des grants séparés par des virgules
+     * @return void 
+     */
+    public function setGrants(?string $grants)
+    {
+        $grants = explode(',', $grants);
+        $this->grants = $grants;
+    }
+    /**
+     * Méthode pour ajouter un grant
+     * @param string $grant le grant à ajouter
+     * @return void
+     */
+    public function addGrant(?string $grant): void
+    {
+        $this->grants[] = $grant;
+    }
+
+    /**
+     * Méthode pour supprimer un grant
+     * @param string $grant le grant à supprimer
+     * @return void
+     */
+    public function removeGrant(?string $grant): void
+    {
+        unset($this->grants[array_search($grant, $this->grants)]);
+        sort($this->grants);
+    }
+
+    /** Bloc méthodes   **/
     /**
      * Méthode pour hasher le password
      * @return void
@@ -162,25 +185,22 @@ class User extends Entity
      */
     public static function hydrateUser(array $userData): User
     {
-        $user = new User
-        (
-            $userData["firstname"],
-            $userData["lastname"],
-            $userData["email"],
-            $userData["password"]
+        $user = new User(
+            $userData["firstname"] ?? null,
+            $userData["lastname"] ?? null,
+            $userData["email"] ?? null,
+            $userData["password"] ?? null
         );
 
-        $user->setId($userData["id"]);
-        $user->setPseudo($userData["pseudo"]);
-        $user->setImgProfil($userData["imgProfil"]);
-        if (gettype($userData["grants"]) === "string") {
-            $userData["grants"] = explode(",", $userData["grants"]);
+        $user->setId($userData["id"] ?? null);
+        $user->setPseudo($userData["pseudo"] ?? "");
+        $user->setImgProfil($userData["imgProfil"] ?? "");
+
+        if (isset($userData["grants"]) && gettype($userData["grants"]) === "string") {
+            $user->setGrants($userData["grants"]);
         }
-        foreach($userData["grants"] as $grant) {
-            $user->addGrant($grant);
-        }
-        
-        $user->setStatus($userData["status"]);
+
+        $user->setStatus($userData["status"] ?? false);
 
         return $user;
     }
@@ -192,8 +212,11 @@ class User extends Entity
     public function toArray(): array
     {
         $userData =  [];
-        //Create an array from the object properties
+        //Crée un tableau de données à partir des attributs de l'objet User
         foreach ($this as $key => $value) {
+            if ($key === 'grants' && is_array($value)) {
+                $value = implode(',', $value);
+            }
             $userData[$key] = $value;
         }
         return $userData;
