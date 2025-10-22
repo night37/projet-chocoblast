@@ -1,5 +1,5 @@
 -- Création de la Base de données
-CREATE DATABASE chocoblast CHARSET utf8mb4;
+CREATE DATABASE IF NOT EXISTS chocoblast CHARSET utf8mb4;
 USE chocoblast;
 
 -- Création des tables

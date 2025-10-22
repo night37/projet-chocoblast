@@ -12,6 +12,9 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
 
 
+$dotenv = Dotenv\Dotenv::createImmutable("../");
+$dotenv->load();
+
 //Import des classes
 use App\Controller\HomeController;
 use App\Controller\ErrorController;

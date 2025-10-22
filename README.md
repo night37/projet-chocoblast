@@ -20,3 +20,10 @@ DATABASE_PASSWORD="Password de la BDD"
 ```bash
 php -S 127.0.0.1:8000 -t public
 ```
+### 6 Démarrer le projet avec Docker
+```bash
+# build image docker
+docker compose up -d --build
+# démarrer si build
+docker compose up -d
+```
