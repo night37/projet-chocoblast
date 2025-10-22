@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\EntityInterface;
 use App\Repository\AbstractRepository;
 use App\Entity\User;
+
 
 class UserRepository extends AbstractRepository
 {
@@ -34,8 +36,15 @@ class UserRepository extends AbstractRepository
         $req->execute();
     }
     //Afficher un Utilisateur
-
+    public function find(int $id): ?EntityInterface
+    {
+        return new EntityInterface();
+    }
+    
     //Afficher tous les Utilisateur
-
+    public function findAll(): array
+    {
+        return [];
+    }
     //Modifier un Utilisateur
 }
