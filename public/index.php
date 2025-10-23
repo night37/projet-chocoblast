@@ -3,50 +3,39 @@
 //Import de l'autoloader
 include __DIR__ . "../../vendor/autoload.php";
 
-//Analyse de l'URL avec parse_url() et retourne ses composants
-$url = parse_url($_SERVER['REQUEST_URI']);
-//test soit l'url a une route sinon on renvoi à la racine
-$path = isset($url['path']) ? $url['path'] : '/';
-
 //Chargement des variables d'environnement
 $dotenv = Dotenv\Dotenv::createImmutable("../");
 $dotenv->load();
 
-//Import des classes
+/** Import des classes */
+
 use App\Controller\HomeController;
 use App\Controller\ErrorController;
+use App\Controller\SecurityController;
+use App\Service\SecurityService;
 
-//instanciation des objets Controller
-$homeController = new HomeController();
 $errorController = new ErrorController();
 
-//Router
-switch ($path) {
-    case '/':
-        $homeController->index();
-        break;
-    case '/login':
-        echo "login";
-        break;
-    case '/logout':
-        echo "Déconnexion";
-        break;
-    case '/chocoblast/add':
-        echo "Ajout d'un chocoblast";
-        break;
-    case '/chocoblast/all':
-        echo "Afficher tous les chocoblasts";
-        break;
-    case '/chocoblast/id':
-        echo "Affichage d'un chocoblast par son ID";
-        break;
-    case '/chocoblast/update/id':
-        echo "Modifier le chocoblast par son ID";
-        break;
-    case '/chocoblast/delete/id':
-        echo "Supprimer un chocoblast par son ID";
-        break;
-    default:
-        $errorController->error404();
-        break;
+/** Bloc Router */
+
+use Mithridatem\Routing\Route;
+use Mithridatem\Routing\Router;
+use Mithridatem\Routing\Exception\RouterException;
+
+//instance du router
+$router = new Router();
+
+/** Ajouter les routes */
+$router->map(Route::controller('GET', '/', HomeController::class, 'index'));
+$router->map(Route::controller('GET', '/error', ErrorController::class, 'error403'));
+$router->map(Route::controller('GET', '/login', SecurityService::class, 'login'));
+$router->map(Route::controller('POST', '/login', SecurityService::class, 'login'));
+$router->map(Route::controller('GET', '/logout', SecurityService::class, 'logout'));
+$router->map(Route::controller('GET', '/register', SecurityService::class, 'register'));
+$router->map(Route::controller('POST', '/register', SecurityService::class, 'register'));
+
+try {
+    $router->dispatch();
+} catch (RouterException $e) {
+    $errorController->error404();
 }
