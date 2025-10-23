@@ -3,14 +3,21 @@
 namespace App\Entity;
 
 use App\Entity\Entity;
+use Mithridatem\Validation\Attributes\Email;
+use Mithridatem\Validation\Attributes\NotBlank;
 
 class User extends Entity
 {
     /** Bloc attributs  **/
     private ?int $id;
+    #[NotBlank]
     private ?string $lastname;
+    #[NotBlank]
     private ?string $firstname;
+    #[NotBlank]
     private ?string $pseudo;
+    #[NotBlank]
+    #[Email]
     private ?string $email;
     private ?string $password;
     private ?string $imgProfil;

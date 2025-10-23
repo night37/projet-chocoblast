@@ -28,7 +28,14 @@ class SecurityController extends AbstractController
 
     //Méthode register (créer un compte User)
     public function register() {
-         $this->securityService->addUser();
-        $this->render('','');
+        //Test si le formulaire est submit
+        if ($this->isFormSubmitted($_POST)) {
+            //Appel de la logique du service
+            $message = $this->securityService->addUser($_POST);
+            $data["message"] = $message;
+        }
+        
+        //rendu de la vue
+        $this->render('register','register', $data ?? []);
     }
 }

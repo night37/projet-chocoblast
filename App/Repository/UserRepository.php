@@ -112,5 +112,16 @@ class UserRepository extends AbstractRepository
         }
         return $users;
     }
+
+    public function isUserExistWithEmail(string $email): bool 
+    {
+        $request = "SELECT u.id FROM users AS u WHERE email = ?";
+        $req = $this->connexion->prepare($request);
+        $req->bindParam(1, $email, \PDO::PARAM_STR);
+        $req->execute();
+        
+        //Test si le compte n'existe pas
+        return $req->fetch(\PDO::FETCH_ASSOC);
+    }
     //Modifier un Utilisateur
 }
