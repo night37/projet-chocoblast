@@ -23,10 +23,11 @@ $errorController = new ErrorController();
 use Mithridatem\Routing\Route;
 use Mithridatem\Routing\Router;
 use Mithridatem\Routing\Exception\RouterException;
+use Mithridatem\Routing\Auth\ArrayGrantChecker;
 
 //instance du router
 $router = new Router();
-
+$router->setGrantChecker(new ArrayGrantChecker($_SESSION["grants"] ?? ["ROLE_PUBLIC"]));
 
 /** Ajouter les routes */
 $router->map(Route::controller('GET', '/', HomeController::class, 'index'));
@@ -36,9 +37,15 @@ $router->map(Route::controller('POST', '/login', SecurityController::class, 'log
 $router->map(Route::controller('GET', '/logout', SecurityController::class, 'logout'));
 $router->map(Route::controller('GET', '/register', SecurityController::class, 'register'));
 $router->map(Route::controller('POST', '/register', SecurityController::class, 'register'));
+$router->map(Route::controller('GET', '/test', HomeController::class, 'test',["ROLE_USER"]));
 
 try {
     $router->dispatch();
 } catch (RouterException $e) {
-    $errorController->error404();
+    if ( $e->getCode() == 404) {
+        $errorController->error404();
+    }
+    if ($e->getCode() == 403) {
+        $errorController->error403();
+    }
 }

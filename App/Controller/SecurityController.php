@@ -27,8 +27,7 @@ class SecurityController extends AbstractController
 
     //Méthode logout (se déconnecter)
     public function logout() {
-         $this->securityService->deconnexion();
-        $this->render('','');
+        $this->securityService->deconnexion();
     }
 
     //Méthode register (créer un compte User)

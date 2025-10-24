@@ -35,4 +35,13 @@ class HomeController extends AbstractController
     {
         $this->render("home", "vide");
     }
+
+    /**
+     * Méthode de test d'authentification
+     * @return void affiche la page de test
+     */
+    public function test()
+    {
+        $this->render("test", "test");
+    }
 }

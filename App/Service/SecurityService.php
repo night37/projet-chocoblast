@@ -113,5 +113,8 @@ class SecurityService
     }
 
     //Logique métier de la déconnexion
-    public function deconnexion() {}
+    public function deconnexion() {
+        session_destroy();
+        header("Location:/");
+    }
 }
