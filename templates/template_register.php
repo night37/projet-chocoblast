@@ -3,11 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+>
     <title><?= $title ?? "" ?></title>
 </head>
 
 <body>
-    <h1>Ajouter un compte</h1>
+    
+    <div class="container">
+        <h1>Ajouter un compte</h1>
     <form action="" method="post">
         <input type="text" name="firstname" id="" placeholder="saisir votre prénom">
         <input type="text" name="lastname" id="" placeholder="saisir votre prénom">
@@ -18,6 +24,7 @@
         <input type="submit" value="Ajouter" name="submit">
     </form>
     <p><?= $data["message"] ?? "" ?></p>
+    </div>
 </body>
 
 </html>

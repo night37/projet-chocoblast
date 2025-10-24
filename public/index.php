@@ -7,6 +7,9 @@ include __DIR__ . "/../vendor/autoload.php";
 $dotenv = Dotenv\Dotenv::createImmutable("../");
 $dotenv->load();
 
+//Démarrage de la session
+session_start();
+
 /** Import des classes */
 
 use App\Controller\HomeController;
@@ -23,6 +26,7 @@ use Mithridatem\Routing\Exception\RouterException;
 
 //instance du router
 $router = new Router();
+
 
 /** Ajouter les routes */
 $router->map(Route::controller('GET', '/', HomeController::class, 'index'));

@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use App\Entity\User;
 use Mithridatem\Validation\Validator;
 use Mithridatem\Validation\Exception\ValidationException;
+use App\Utils\StringTools;
 
 class SecurityService
 {
@@ -26,6 +27,9 @@ class SecurityService
         if ($user["password"] != $user["verif_password"]) {
             return "Les mots de passe ne sont pas identiques";
         }
+
+        //Nettoyer les entrées
+        $user = StringTools::sanitize_array($user);
 
         //Test si l'utilisateur existe 
         if ($this->userRepository->isUserExistWithEmail($user["email"])) {
@@ -60,8 +64,43 @@ class SecurityService
     }
 
     //Logique métier de la connexion
-    public function connexion() {}
+    public function connexion(array $post): string
+    {
+        //Nettoyer
+        $user = StringTools::sanitize_array($post);
 
+        //Récupére l'objet User
+        $user = $this->userRepository->findUserByEmail($post["email"]);
+        
+        //Si le compte n'existe pas
+        if (!isset($user)) {
+            return "Les informations de connexion email et ou password sont invalides";
+        }
+        
+        //test si les champs sont valides
+        try {
+            $this->validator->validate($user);
+        } catch (ValidationException $e) {
+            return $e->getMessage();
+        }
+
+        //Test si le password est correct
+        if ($user instanceof User && $user->verifPassword($post["email"])) {
+            return "Connecté";
+        }
+
+        return "Login/ mdp invalides";
+    }
+    
+    private function onAuthentificationSuccess() 
+    {
+
+    }
+
+    private function onAuthentificationFailed() 
+    {
+
+    }
     //Logique métier de la déconnexion
     public function deconnexion() {}
 }

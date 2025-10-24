@@ -124,4 +124,21 @@ class UserRepository extends AbstractRepository
         return $req->fetch(\PDO::FETCH_ASSOC);
     }
     //Modifier un Utilisateur
+    public function findUserByEmail(string $email): ?Entity
+    {
+        $request = "SELECT u.id, u.firstname, u.lastname, u.email, u.password, u.img_profile AS imgProfil,
+        u.grants, u.pseudo, u.status  FROM users AS u WHERE u.email = ?";
+        $req = $this->connexion->prepare($request);
+        $req->bindParam(1, $email, \PDO::PARAM_STR);
+        $req->execute();
+        $userTab = $req->fetch(\PDO::FETCH_ASSOC);
+        //Test si l'utilisateur n'existe pas
+        if (!$userTab) {
+            return null;
+        }
+        //hydrater le tableau
+        $user = User::hydrateUser($userTab);
+        
+        return $user;
+    }
 }
