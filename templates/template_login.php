@@ -10,16 +10,17 @@
 </head>
 
 <body>
-    <main>
-    <section class="container">
-        <h1>Se connecter</h1>
-        <form action="" method="post">
-            <input type="email" name="email" placeholder="Saisir votre email" required>
-            <input type="password" name="password" placeholder="Saisir votre mot de passe"required>
-            <input type="submit" value="Se connecter" name="submit">
-        </form>
-        <p><?= $data["message"] ??""?></p>
-    </section>
+    <main class="container">
+        <?php include "components/components_navbar.php";?>
+        <section>
+            <h1>Se connecter</h1>
+            <form action="" method="post">
+                <input type="email" name="email" placeholder="Saisir votre email" required>
+                <input type="password" name="password" placeholder="Saisir votre mot de passe"required>
+                <input type="submit" value="Se connecter" name="submit">
+            </form>
+            <p><?= $data["message"] ??""?></p>
+        </section>
     </main>
 </body>
 
