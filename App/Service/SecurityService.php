@@ -85,22 +85,33 @@ class SecurityService
         }
 
         //Test si le password est correct
-        if ($user instanceof User && $user->verifPassword($post["email"])) {
+        if ($user instanceof User && $user->verifPassword($post["password"])) {
+            $this->onAuthentificationSuccess($user);
             return "Connecté";
         }
 
-        return "Login/ mdp invalides";
+        $this->onAuthentificationFailed();
+        
+        return "Les informations de connexion email et ou password ne sont pas correctes";
     }
     
-    private function onAuthentificationSuccess() 
+    private function onAuthentificationSuccess(User $user): void 
     {
-
+        //Création des super globales de session
+        $_SESSION["email"] = $user->getEmail();
+        $_SESSION["firstname"] = $user->getFirstname();
+        $_SESSION["lastname"] = $user->getLastname();
+        $_SESSION["imgProfil"] = $user->getImgProfil();
+        $_SESSION["grants"] = $user->getGrants();
+        header("Refresh:2; url=/");
     }
 
-    private function onAuthentificationFailed() 
+    private function onAuthentificationFailed(): void
     {
-
+        session_destroy();
+        header("Refresh:3; url=/login");
     }
+
     //Logique métier de la déconnexion
     public function deconnexion() {}
 }
