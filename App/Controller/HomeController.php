@@ -44,4 +44,8 @@ class HomeController extends AbstractController
     {
         $this->render("test", "test");
     }
+
+    public function showCgu ()  {
+        $this->render('cgu','cgu');
+    }
 }

@@ -14,5 +14,6 @@
         <li><a href="/test">Test</a></li>
         <li><a href="/logout">Logout</a></li>
         <?php endif ?>
+        <li><a href="/cgu">Cgu</a></li>
     </ul>
 </nav>

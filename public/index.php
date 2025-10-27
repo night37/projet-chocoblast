@@ -31,6 +31,7 @@ $router->setGrantChecker(new ArrayGrantChecker($_SESSION["grants"] ?? ["ROLE_PUB
 
 /** Ajouter les routes */
 $router->map(Route::controller('GET', '/', HomeController::class, 'index'));
+$router->map(Route::controller('GET', '/cgu', HomeController::class, 'showCgu'));
 $router->map(Route::controller('GET', '/error', ErrorController::class, 'error403'));
 $router->map(Route::controller('GET', '/login', SecurityController::class, 'login'));
 $router->map(Route::controller('POST', '/login', SecurityController::class, 'login'));
